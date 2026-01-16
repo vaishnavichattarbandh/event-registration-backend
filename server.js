@@ -17,22 +17,17 @@ const app = express();
    MIDDLEWARE
 ========================= */
 
-// ✅ CORS CONFIG (IMPORTANT)
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", // local frontend
-      "https://event-registration-frontend-r2kn.vercel.app", // Vercel frontend
+      "http://localhost:5173",
+      "https://event-registration-frontend-r2kn.vercel.app",
     ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
 
-// Handle preflight requests
-app.options("*", cors());
-
-// JSON parser
 app.use(express.json());
 
 /* =========================
@@ -142,9 +137,7 @@ app.get("/api/registrations/export/excel", async (req, res) => {
       { header: "Date", key: "createdAt", width: 20 },
     ];
 
-    registrations.forEach((reg) => {
-      worksheet.addRow(reg);
-    });
+    registrations.forEach((reg) => worksheet.addRow(reg));
 
     res.setHeader(
       "Content-Type",
@@ -171,7 +164,7 @@ app.get("/", (req, res) => {
 });
 
 /* =========================
-   START SERVER (RENDER SAFE)
+   START SERVER
 ========================= */
 const PORT = process.env.PORT || 5000;
 
