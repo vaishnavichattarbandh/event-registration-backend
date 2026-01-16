@@ -16,13 +16,23 @@ const app = express();
 /* =========================
    MIDDLEWARE
 ========================= */
+
+// ✅ CORS CONFIG (IMPORTANT)
 app.use(
   cors({
-    origin: "*", // allow Render + local frontend
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: [
+      "http://localhost:5173", // local frontend
+      "https://event-registration-frontend-r2kn.vercel.app", // Vercel frontend
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
   })
 );
 
+// Handle preflight requests
+app.options("*", cors());
+
+// JSON parser
 app.use(express.json());
 
 /* =========================
