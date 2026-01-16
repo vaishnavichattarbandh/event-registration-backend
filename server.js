@@ -1,4 +1,8 @@
-require("dotenv").config();
+// Load env only in local development
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const cors = require("cors");
 const ExcelJS = require("exceljs");
@@ -14,10 +18,11 @@ const app = express();
 ========================= */
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*", // allow Render + local frontend
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
 app.use(express.json());
 
 /* =========================
@@ -60,7 +65,6 @@ app.post("/api/registrations", async (req, res) => {
 
 /* =========================
    FETCH REGISTRATIONS
-   (Pagination + Search)
 ========================= */
 app.get("/api/registrations", async (req, res) => {
   try {
@@ -157,10 +161,10 @@ app.get("/", (req, res) => {
 });
 
 /* =========================
-   START SERVER
+   START SERVER (RENDER SAFE)
 ========================= */
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`🚀 Backend running on port ${PORT}`);
 });
-
